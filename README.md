@@ -2,7 +2,7 @@
 
 Template workshop vibe coding Creative Hub App Talent (CHAT) 2026. Repo ini berisi tampilan aplikasi katalog UMKM; tugasmu merangkainya menjadi sistem utuh dengan bantuan AI: database, login admin, keamanan, dan pemesanan lewat WhatsApp.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FUSERNAME%2Fkatalog-umkm)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhiraethhere%2Fkatalog-reza)
 
 > Untuk pengelola repo: ganti `USERNAME` pada link tombol di atas dengan akun GitHub pemilik repo template ini.
 
@@ -76,7 +76,7 @@ Urutan yang disarankan: US-01, US-02, US-03, US-04, US-05, US-06, lalu fitur bon
 
 ## Tentang aplikasi ini
 
-- **Nama usaha:**
-- **Pembuat:**
-- **Link aplikasi:**
+- **Nama usaha:Inti Pratama Musik**
+- **Pembuat:Muhammad Reza Arifin**
+- **Link aplikasi:https://katalog-reza.vercel.app/**
 - **Fitur bonus yang dikerjakan:**
