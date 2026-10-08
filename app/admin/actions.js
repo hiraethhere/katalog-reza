@@ -272,3 +272,53 @@ export async function ubahProduk(arg1, arg2, arg3) {
 
 export const updateProduct = ubahProduk;
 export const editProduk = ubahProduk;
+
+export async function hapusProduk(id) {
+  if (!id) {
+    return { error: "ID produk tidak valid." };
+  }
+
+  const idNum = parseInt(id, 10);
+  if (isNaN(idNum) || idNum <= 0) {
+    return { error: "ID produk tidak valid." };
+  }
+
+  const supabase = await createAdminClient();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    return { error: "Akses ditolak: Anda harus login sebagai admin untuk menghapus produk." };
+  }
+
+  // Periksa produk ada terlebih dahulu
+  const { data: produk, error: cariError } = await supabase
+    .from("produk")
+    .select("id")
+    .eq("id", idNum)
+    .maybeSingle();
+
+  if (cariError) {
+    return { error: cariError.message || "Gagal memeriksa produk." };
+  }
+
+  if (!produk) {
+    return { error: "Produk tidak ditemukan." };
+  }
+
+  const { error: hapusError } = await supabase
+    .from("produk")
+    .delete()
+    .eq("id", idNum);
+
+  if (hapusError) {
+    return { error: hapusError.message || "Gagal menghapus produk." };
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/");
+}
+
+export const deleteProduct = hapusProduk;

@@ -191,7 +191,7 @@ Proteksi route (proxy.js) tetap aktif dan tidak diubah.
 
 Tambahkan bagian baru untuk setiap error yang kamu perbaiki atau fitur bonus yang kamu kerjakan.
 
-## US-07 Tambah Produk Admin
+## US-08 Tambah Produk Admin
 **PROMPT:**
 Baca AGENTS.md, docs/PRD.md, docs/user-stories.md bagian US-08, docs/rancangan-teknis.md, dan DESIGN.md sebelum mengerjakan.
 
@@ -235,6 +235,61 @@ app/admin/produk/baru/page.jsx:
 Menghubungkan form ke Server Action tambahProduk menggunakan useActionState.
 Menampilkan kotak pesan error jika penyimpanan gagal.
 Menghapus komponen CatatanBelumAktif.
+
+**Perbaikan:**
+Tidak ada perbaikan
+
+## US-09 Ubah Produk Admin
+
+**Prompt:**
+
+Baca AGENTS.md, docs/PRD.md, docs/user-stories.md bagian US-09, docs/rancangan-teknis.md, dan DESIGN.md sebelum mengerjakan.
+
+Kerjakan US-09 (Ubah produk).
+
+Buat fitur ubah produk pada halaman `/admin/produk/[id]/ubah`. Halaman harus mengambil data produk berdasarkan `id` dari URL di tabel "produk" di Supabase, lalu mengisi form dengan data produk yang sudah ada.
+
+Gunakan komponen `FormProduk` yang sudah ada dan jangan mengubah tampilan atau styling form. Form harus menampilkan dan dapat mengubah data `nama`, `harga`, `deskripsi`, `foto_url`, dan `kategori`.
+
+Sambungkan form ke Server Action untuk menyimpan perubahan ke produk yang sesuai di tabel "produk". Sebelum melakukan perubahan, Server Action wajib memeriksa bahwa admin sudah login di server. Jika belum login, jangan izinkan proses perubahan data.
+
+Setelah produk berhasil diperbarui, arahkan kembali ke `/admin`. Jika produk tidak ditemukan berdasarkan `id`, tampilkan halaman atau pesan "produk tidak ditemukan" yang jelas. Jika proses penyimpanan gagal, tampilkan pesan error yang jelas dan jangan menganggap perubahan berhasil.
+
+Gunakan koneksi Supabase yang sudah tersedia di `lib/supabase` dan jangan membuat client Supabase di file yang memakai `"use client"`. Jangan memasang package npm baru dan jangan mengubah RLS atau schema database.
+
+Gunakan format `params` yang sesuai dengan Next.js 16 karena parameter halaman dinamis berupa Promise.
+
+Hapus `CatatanBelumAktif` dari halaman `/admin/produk/[id]/ubah` jika masih ada.
+
+Jangan mengubah fitur lain yang tidak diperlukan untuk US-09 dan pertahankan tampilan sesuai DESIGN.md.
+
+Setelah selesai, jelaskan singkat file apa saja yang diubah dan cara mengetes US-09, termasuk cara memastikan data lama muncul di form, perubahan berhasil tersimpan, dan pengguna yang belum login tidak dapat mengubah produk.
+
+**Hasil:**
+Pekerjaan untuk US-09 (Ubah produk) telah selesai.
+
+File yang Diubah
+components/FormProduk.jsx:
+Menambahkan hidden input {produk.id && <input type="hidden" name="id" defaultValue={produk.id} />} agar id produk selalu terkirim saat form disubmit.
+Tetap mempertahankan seluruh styling, layout, dan komponen input yang sudah ada.
+app/admin/actions.js:
+Menambahkan Server Action ubahProduk (dan alias updateProduct, editProduk).
+Memeriksa sesi login admin di sisi server menggunakan supabase.auth.getUser(). Jika pengguna belum login, proses update ditolak.
+Memvalidasi data input (nama tidak boleh kosong, harga harus berupa bilangan bulat 
+≥
+0
+≥0).
+Menyimpan pembaruan data (nama, harga, kategori, foto_url, deskripsi) ke tabel produk di Supabase berdasarkan id.
+Melakukan revalidatePath untuk cache halaman /admin, /produk/[id], dan /, lalu mengarahkan kembali ke /admin (redirect("/admin")) jika berhasil.
+Jika terjadi error saat update, halaman tidak dialihkan dan pesan error ditampilkan.
+app/admin/produk/[id]/ubah/page.jsx:
+Mengambil parameter id URL dengan const { id } = await params; sesuai format Promise di Next.js 16.
+Mengambil data produk langsung dari tabel produk di Supabase di sisi server.
+Memanggil notFound() jika produk dengan id tersebut tidak ditemukan di database.
+Mengisi form FormProduk dengan data lama produk.
+Menghubungkan form ke Server Action ubahProduk.
+Menampilkan kotak pesan error jika ada kegagalan update.
+Menghapus komponen CatatanBelumAktif dan ketergantungan pada lib/data-contoh.js.
 
 **Perbaikan:**
 Tidak ada perbaikan
