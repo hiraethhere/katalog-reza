@@ -131,12 +131,62 @@ Tidak ada Perbaikan
 ## US-06 Proteksi halaman admin
 
 **Prompt:**
+Baca AGENTS.md aturan keamanan nomor 3 dan 4, dan docs/user-stories.md bagian US-06.
 
+Buat file proxy.js di root proyek (Next.js 16). Semua rute /admin kecuali /admin/login wajib login dengan Supabase Auth; kalau belum login, alihkan ke /admin/login. Pastikan juga setiap Server Action yang mengubah data memeriksa login di server. Hapus CatatanBelumAktif dari halaman /admin.
 
 **Hasil:**
+Pekerjaan untuk US-06 (Proteksi halaman admin) telah selesai.
+
+File yang Ditambahkan & Diubah
+proxy.js (Baru di root proyek):
+Menggunakan format proxy bawaan Next.js 16 (ƒ Proxy (Middleware)).
+Memeriksa sesi login menggunakan @supabase/ssr dan cookie permintaan.
+Mengalihkan setiap akses ke /admin dan sub-rutenya (kecuali /admin/login) ke /admin/login jika pengguna belum login.
+Mengalihkan pengguna yang sudah login ke /admin jika mencoba membuka /admin/login.
+app/admin/actions.js:
+Memastikan Server Action yang mengubah data (seperti gantiPassword) memvalidasi sesi admin aktif melalui supabase.auth.getUser() sebelum memproses perubahan.
+app/admin/page.jsx:
+Menghapus komponen CatatanBelumAktif.
 
 **Perbaikan:**
+Tidak ada perbaikan
 
 ## Debugging dan fitur bonus
+
+## US-06 List Produk Admin
+
+**PROMPT:**
+Baca AGENTS.md, docs/PRD.md, docs/user-stories.md bagian US-07, docs/rancangan-teknis.md, dan DESIGN.md sebelum mengerjakan.
+
+Kerjakan US-07 (List Produk).
+
+Ubah halaman `/admin` supaya daftar produk mengambil data dari tabel "produk" di Supabase, bukan dari `lib/data-contoh.js`. Pengambilan data harus dilakukan di sisi server menggunakan koneksi Supabase yang sudah tersedia di `lib/supabase`.
+
+Gunakan komponen `TabelProduk` yang sudah ada untuk menampilkan daftar produk. Jangan membuat komponen tabel baru dan jangan mengubah tampilan atau styling `TabelProduk` yang sudah ada.
+
+Pastikan halaman `/admin` tetap menggunakan proteksi login yang sudah dibuat. Jangan mengubah mekanisme autentikasi atau proteksi route yang sudah berjalan.
+
+Jika pengambilan data dari database gagal, tampilkan pesan error yang jelas dan sesuai panduan tampilan. Jika tabel `produk` kosong, tampilkan pesan yang jelas bahwa belum ada produk.
+
+Hapus `CatatanBelumAktif` dari halaman ini jika masih ada.
+
+Ikuti aturan keamanan di AGENTS.md: Supabase hanya diakses dari server, jangan menggunakan `NEXT_PUBLIC_` untuk environment variable, jangan mematikan RLS, dan jangan mengubah file atau fitur lain yang tidak diperlukan untuk US-07.
+
+Setelah selesai, jelaskan singkat file apa saja yang diubah dan cara mengetes US-07.
+
+**HASIL:**
+Pekerjaan untuk US-07 (List Produk di Halaman Admin) telah selesai.
+
+File yang Diubah
+app/admin/page.jsx:
+Mengambil daftar produk langsung dari tabel produk di Supabase secara dinamis di sisi server (force-dynamic).
+Menggunakan koneksi Supabase yang tersedia di lib/supabase.
+Menghapus ketergantungan pada lib/data-contoh.js.
+Menggunakan komponen TabelProduk yang sudah ada tanpa mengubah styling atau strukturnya.
+Menampilkan pesan error yang jelas jika pengambilan data gagal (text-bahaya dan berbingkai border-garis bg-permukaan).
+Menampilkan tulisan "Belum ada produk" jika tabel kosong.
+Memastikan CatatanBelumAktif sudah dihapus dari halaman ini.
+Proteksi route (proxy.js) tetap aktif dan tidak diubah.
 
 Tambahkan bagian baru untuk setiap error yang kamu perbaiki atau fitur bonus yang kamu kerjakan.
