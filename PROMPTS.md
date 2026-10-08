@@ -109,12 +109,29 @@ Baca docs/user-stories.md bagian US-05.
 Buat Server Action ganti password di app/admin/actions.js untuk admin yang sedang login, memakai Supabase Auth. Validasi di server: password baru minimal 8 karakter dan harus sama dengan konfirmasi. Tampilkan pesan berhasil atau pesan error yang jelas di halaman. Sambungkan ke form di app/admin/password/page.jsx tanpa mengubah tampilannya. Hapus CatatanBelumAktif dari halaman ini.
 
 **Hasil:**
+File yang Diubah
+app/admin/actions.js:
+Menambahkan Server Action gantiPassword (dan alias ubahPassword, changePassword).
+Melakukan validasi di sisi server:
+Memastikan input tidak kosong.
+Memastikan password baru minimal 8 karakter.
+Memastikan password baru sama persis dengan konfirmasi password.
+Memastikan sesi admin sedang aktif (supabase.auth.getUser()).
+Memperbarui password admin yang sedang aktif menggunakan supabase.auth.updateUser({ password }).
+Mengembalikan pesan sukses atau pesan error yang jelas.
+app/admin/password/page.jsx:
+Menyambungkan form ke Server Action gantiPassword menggunakan hook useActionState.
+Menampilkan notifikasi pesan sukses (text-utama) atau pesan error (text-bahaya) di atas form.
+Menghapus komponen CatatanBelumAktif.
+Menjaga seluruh tata letak dan tampilan halaman tetap konsisten sesuai desain asli.
 
 **Perbaikan:**
+Tidak ada Perbaikan
 
 ## US-06 Proteksi halaman admin
 
 **Prompt:**
+
 
 **Hasil:**
 
