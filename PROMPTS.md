@@ -154,7 +154,7 @@ Tidak ada perbaikan
 
 ## Debugging dan fitur bonus
 
-## US-06 List Produk Admin
+## US-07 List Produk Admin
 
 **PROMPT:**
 Baca AGENTS.md, docs/PRD.md, docs/user-stories.md bagian US-07, docs/rancangan-teknis.md, dan DESIGN.md sebelum mengerjakan.
@@ -190,3 +190,51 @@ Memastikan CatatanBelumAktif sudah dihapus dari halaman ini.
 Proteksi route (proxy.js) tetap aktif dan tidak diubah.
 
 Tambahkan bagian baru untuk setiap error yang kamu perbaiki atau fitur bonus yang kamu kerjakan.
+
+## US-07 Tambah Produk Admin
+**PROMPT:**
+Baca AGENTS.md, docs/PRD.md, docs/user-stories.md bagian US-08, docs/rancangan-teknis.md, dan DESIGN.md sebelum mengerjakan.
+
+Kerjakan US-08 (Tambah produk).
+
+Buat fitur tambah produk pada halaman `/admin/produk/baru`. Sambungkan form yang sudah ada ke Server Action untuk menyimpan produk baru ke tabel "produk" di Supabase.
+
+Gunakan komponen `FormProduk` yang sudah ada dan jangan mengubah tampilan atau styling form. Form harus menyimpan data sesuai kolom tabel `produk`: `nama`, `harga`, `deskripsi`, `foto_url`, dan `kategori`.
+
+Sebelum menyimpan data, Server Action wajib memeriksa bahwa admin sudah login di server. Jika belum login, jangan izinkan proses penyimpanan.
+
+Setelah produk berhasil disimpan, arahkan kembali ke `/admin`. Jika penyimpanan gagal, tampilkan pesan error yang jelas di halaman dan jangan menganggap produk berhasil disimpan.
+
+Gunakan koneksi Supabase yang sudah tersedia di `lib/supabase` dan jangan membuat client Supabase di file yang memakai `"use client"`. Jangan memasang package npm baru dan jangan mengubah RLS atau schema database.
+
+Hapus `CatatanBelumAktif` dari halaman `/admin/produk/baru` jika masih ada.
+
+Jangan mengubah fitur lain yang tidak diperlukan untuk US-08 dan pertahankan tampilan sesuai DESIGN.md.
+
+Setelah selesai, jelaskan singkat file apa saja yang diubah dan cara mengetes US-08, termasuk cara memastikan pengguna yang belum login tidak dapat menambahkan produk.
+
+
+**Hasil:**
+Pekerjaan untuk US-08 (Tambah produk) telah selesai.
+
+File yang Diubah
+components/FormProduk.jsx:
+Menerima prop action pada tag <form> agar form dapat terhubung ke Server Action.
+Tidak ada perubahan pada tampilan, styling Tailwind, maupun kolom input yang sudah ada.
+app/admin/actions.js:
+Menambahkan Server Action tambahProduk (dan alias createProduct, simpanProduk).
+Memeriksa sesi admin di sisi server menggunakan supabase.auth.getUser(). Jika pengguna belum login, aksi ditolak dengan pesan: "Akses ditolak: Anda harus login sebagai admin untuk menambah produk.".
+Memvalidasi data input: nama wajib diisi, harga harus berupa bilangan bulat 
+≥
+0
+≥0.
+Menyimpan data sesuai skema kolom tabel produk (nama, harga, kategori, foto_url, deskripsi).
+Melakukan revalidatePath untuk /admin dan /, kemudian mengarahkan kembali ke /admin (redirect("/admin")) jika berhasil.
+Jika terjadi error pada database, Server Action mengembalikan objek { error: ... } dan tidak melakukan pengalihan halaman.
+app/admin/produk/baru/page.jsx:
+Menghubungkan form ke Server Action tambahProduk menggunakan useActionState.
+Menampilkan kotak pesan error jika penyimpanan gagal.
+Menghapus komponen CatatanBelumAktif.
+
+**Perbaikan:**
+Tidak ada perbaikan
